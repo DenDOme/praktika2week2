@@ -16,7 +16,7 @@ export const registerRequest = (user) => {
         fetch('https://jurapro.bhuser.ru/api-shop/signup', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(user)
         }).then((response) => response.json()).then((result) => { console.log(result); resolve(result.data.user_token) }).catch((error) => { reject(error) })

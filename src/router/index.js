@@ -34,10 +34,18 @@ const routes = [
     beforeEnter: ifAuthenticated
   },
   { 
+    path: '/order',
+    name: 'order',
+    component: function(){
+      return import('../views/Orders')
+    },
+    beforeEnter: ifAuthenticated
+  },
+  { 
     path: '/login',
     name: 'login',
     component: function(){
-      return import('../components/Login')
+      return import('../views/Login')
     },
     beforeEnter: ifNotAuthenticated,
   },
@@ -45,7 +53,7 @@ const routes = [
     path: '/register',
     name: 'register',
     component: function(){
-      return import('../components/Register')
+      return import('../views/Register')
     },
     beforeEnter: ifNotAuthenticated,
   },

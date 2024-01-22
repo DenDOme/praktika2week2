@@ -4,6 +4,7 @@
     <router-link v-show="!userAuthed" to="/login">Login</router-link>
     <router-link v-show="!userAuthed" to="/register">Register</router-link>
     <router-link v-show="userAuthed" to="/cart">Cart</router-link>
+    <router-link v-show="userAuthed" to="/order">Orders</router-link>
   </div>
   <div class="catalog-grid">
     <div class="catalog-item" v-for="product in products" :key="product.id">

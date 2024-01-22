@@ -27,17 +27,20 @@ export default createStore({
     },
     SET_PRODUCTS(state, products) {
       state.products = products
-    }
+    },
+    REMOVE_FROM_CART: (state, itemId) => {
+      state.cartData = state.cartData.filter((cart) => cart.id !== itemId);
+    },
   },
   actions: {
     GET_CARD_DATAS: ({ commit }) => {
       const token = localStorage.getItem('myAppToken');
       fetch('https://jurapro.bhuser.ru/api-shop/cart', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
       }).then(response => {
         return response.json();
       }).then(result => { commit('GET_CARDS', result.data) }).catch(error => console.error(error))
@@ -84,6 +87,32 @@ export default createStore({
             reject(error);
           });
       })
+    },
+    REMOVE_CARD_ITEM: ({ commit }, itemId) => {
+      const token = localStorage.getItem('myAppToken');
+      fetch(`https://jurapro.bhuser.ru/api-shop/cart/${itemId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      }).then((response) => response.json()).then(() => { commit('REMOVE_FROM_CART', itemId); }).catch((error) => { console.error(error) })
+    },
+    PLACE_ORDER: ({commit}) => {
+      const token = localStorage.getItem('myAppToken');
+      fetch('https://jurapro.bhuser.ru/api-shop/order',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      }).then((response) => {
+        if(response.ok){
+          console.log('aformlen')
+        } else{
+          console.log('error')
+        }
+      }).catch(error => {console.error(error)})
     }
   },
   modules: {
