@@ -1,7 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import HomeView from '../views/HomeView'
-// import LoginView from '../components/Login'
-// import RegisterView from '../components/Register'
 import store from '../store'
 
 const ifNotAuthenticated = (to,from,next) => {
@@ -17,7 +14,7 @@ const ifAuthenticated = (to,from,next) => {
     next();
     return;
   }
-  next('/login')
+  next('/')
 }
 
 const routes = [
@@ -26,8 +23,15 @@ const routes = [
     name: 'home',
     component: function(){
       return import('../views/HomeView')
+    }
+  },
+  { 
+    path: '/cart',
+    name: 'cart',
+    component: function(){
+      return import('../views/Cart')
     },
-    beforeEnter: ifAuthenticated,
+    beforeEnter: ifAuthenticated
   },
   { 
     path: '/login',

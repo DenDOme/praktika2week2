@@ -4,11 +4,18 @@ import { loginRequest, logoutRequest, registerRequest } from '@/utils/api';
 export default createStore({
   state: {
     token: localStorage.getItem('myAppToken') || '',
+    products: [],
+    cartData: [],
   },
   getters: {
-    isAuthenticated: (state) => !!state.token
+    isAuthenticated: (state) => !!state.token,
+    products: state => state.products,
+    carts: state => state.cartData
   },
   mutations: {
+    GET_CARDS: (state, cartData) => {
+      state.cartData = cartData
+    },
     AUTH_SUCCESS: (state, token) => {
       state.token = token;
     },
@@ -17,9 +24,27 @@ export default createStore({
     },
     CLEAR_TOKEN: (state) => {
       state.token = null;
+    },
+    SET_PRODUCTS(state, products) {
+      state.products = products
     }
   },
   actions: {
+    GET_CARD_DATAS: ({ commit }) => {
+      const token = localStorage.getItem('myAppToken');
+      fetch('https://jurapro.bhuser.ru/api-shop/cart', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+      }).then(response => {
+        return response.json();
+      }).then(result => { commit('GET_CARDS', result.data) }).catch(error => console.error(error))
+    },
+    GET_PRODUCTS: ({ commit }) => {
+      fetch("https://jurapro.bhuser.ru/api-shop/products").then((response) => response.json()).then((data) => { commit('SET_PRODUCTS', data.data) }).catch((error) => { console.error(error) })
+    },
     AUTH_REQUEST: ({ commit }, user) => {
       return new Promise((resolve, reject) => {
         loginRequest(user).then((token) => {
@@ -50,16 +75,14 @@ export default createStore({
     },
     AUTH_LOGOUT: ({ commit }) => {
       return new Promise((resolve, reject) => {
-        logoutRequest().then((token) => {
+        logoutRequest().then(() => {
           commit('CLEAR_TOKEN');
           localStorage.removeItem('myAppToken')
           resolve();
         })
-        .catch((error) => {
-          commit('AUTH_ERROR');
-          localStorage.removeItem('myAppToken');
-          reject(error);
-        });
+          .catch((error) => {
+            reject(error);
+          });
       })
     }
   },
