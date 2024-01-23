@@ -1,4 +1,5 @@
 <template>
+  <HeaderDiv/>
     <div>
     <h1>Your Orders:</h1>
     <ul>
@@ -12,8 +13,14 @@
 </template>
 
 <script>
+
+import HeaderDiv from '../components/HeaderDiv.vue'
+
 export default {
     displayName: 'Orders',
+    components:{
+      HeaderDiv
+    },
     data() {
         return {
         orders: [],

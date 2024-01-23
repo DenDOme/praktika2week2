@@ -1,25 +1,24 @@
 <template>
-  <div class="home">
-    <button v-show="userAuthed" @click="logout">logout</button>
-    <router-link v-show="!userAuthed" to="/login">Login</router-link>
-    <router-link v-show="!userAuthed" to="/register">Register</router-link>
-    <router-link v-show="userAuthed" to="/cart">Cart</router-link>
-    <router-link v-show="userAuthed" to="/order">Orders</router-link>
-  </div>
+  <HeaderDiv/>
   <div class="catalog-grid">
     <div class="catalog-item" v-for="product in products" :key="product.id">
-      <h3>{{ product.name }}</h3>
-      <p>{{ product.description }}</p>
-      <p>{{ product.price }}</p>
-      <button v-show="userAuthed" @click="addToCart(product.id)">Add to Cart</button>
+      <h3 class="product_name">{{ product.name }}</h3>
+      <p class="product_text">{{ product.description }}</p>
+      <div class="product_bottom">
+        <p class="product_price">{{ product.price }}$</p>
+        <button class="product_btn" v-show="userAuthed" @click="addToCart(product.id)">Add to Cart</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-
+import HeaderDiv from '../components/HeaderDiv.vue'
 export default {
   displayName: 'Catalog',
+  components: {
+    HeaderDiv
+  },
   computed: {
     products() {
       return this.$store.getters.products
@@ -42,11 +41,6 @@ export default {
         },
       }).then((response) => {response.json()}).catch((error) => {console.error('error',error)});
     },
-    logout() {
-      this.$store.dispatch('AUTH_LOGOUT').then(() => this.$router.push('/')).catch((error) => {
-        console.error('Logout failed:', error);
-      });
-    },
   }
 }
 </script>
@@ -61,5 +55,20 @@ export default {
   width: 50%;
   text-align: center;
   margin: 0 auto;
+}
+.product_btn{
+  height: 40px;
+  width: 75px;
+  font-size: 17px;
+  background: #047275;
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+}
+.product_bottom{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
 }
 </style>

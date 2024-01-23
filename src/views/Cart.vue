@@ -1,20 +1,26 @@
 <template>
+    <HeaderDiv/>
     <div class="cart-item" v-for="cart in carts" :key="cart.id">
       <h3>{{ cart.name }}</h3>
       <p>{{ cart.description }}</p>
       <p>{{ cart.price }}</p>
       <button @click="removeItem(cart.id)">DELETE</button>
     </div>
-    <button @click="placeOrder">ORDER</button>
+    <button v-show="carts.length > 0" @click="placeOrder">ORDER</button>
 </template>
 
 <script>
+import HeaderDiv from '../components/HeaderDiv.vue'
+
 export default {
     displayName: 'Cart',
+    components:{
+        HeaderDiv
+    },
     computed: {
         carts(){
             return this.$store.getters.carts
-        }
+        },
     },
     mounted(){
         this.$store.dispatch('GET_CARD_DATAS')
@@ -30,3 +36,7 @@ export default {
 }
 
 </script>
+
+<style scoped>
+
+</style>
