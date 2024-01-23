@@ -4,7 +4,12 @@
       <h3>{{ cart.name }}</h3>
       <p>{{ cart.description }}</p>
       <p>{{ cart.price }}</p>
-      <button @click="removeItem(cart.id)">DELETE</button>
+      <div>
+        <button @click="decreaseQuantity(cart.id)">-</button>
+        <span>{{ cart.quantity }}</span>
+        <button @click="increaseQuantity(cart.product_id)">+</button>
+      </div>
+      <button @click="removeItem(cart)">DELETE</button>
     </div>
     <button v-show="carts.length > 0" @click="placeOrder">ORDER</button>
 </template>
@@ -30,7 +35,14 @@ export default {
             this.$store.dispatch('PLACE_ORDER').then(() => this.$router.push('/order'))
         },
         removeItem(itemId){
-            this.$store.dispatch('REMOVE_CARD_ITEM',itemId)
+            console.log(itemId.quantity)
+            this.$store.dispatch('REMOVE_CARD_ITEM',itemId.id).then(() => {this.$store.dispatch('GET_CARD_DATAS')})
+        },
+        decreaseQuantity(itemId){
+            this.$store.dispatch('REMOVE_CARD_ITEM',itemId).then(() => {this.$store.dispatch('GET_CARD_DATAS')})
+        },
+        increaseQuantity(itemId){
+            this.$store.dispatch('ADD_CARD_ITEM',itemId).then(() => {this.$store.dispatch('GET_CARD_DATAS')})
         }
     }
 }

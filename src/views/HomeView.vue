@@ -32,14 +32,7 @@ export default {
   },
   methods: {
     addToCart(productId){
-      const token = localStorage.getItem('myAppToken');
-      fetch(`https://jurapro.bhuser.ru/api-shop/cart/${productId}`,{
-        method: 'POST',
-        headers: {
-          'Content-Type':'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-      }).then((response) => {response.json()}).catch((error) => {console.error('error',error)});
+      this.$store.dispatch('ADD_CARD_ITEM',productId).catch(()=>{console.log('addcart error');})
     },
   }
 }
