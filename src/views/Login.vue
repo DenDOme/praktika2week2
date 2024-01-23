@@ -9,7 +9,7 @@
         <input type="password" v-model="password" :class="{'error': passwordError}"/>
         <span v-if="passwordError" class="error-text">{{ passwordError }}</span>
         <hr />
-        <button type="submit">Login</button>
+        <button class="login-btn" type="submit">Login</button>
         <span v-if="authError" class="error-text">Wrong password or email</span>
     </form>
 </template>
@@ -74,12 +74,15 @@ export default {
     width: 300px;
     padding: 10px;
     margin: 0 auto;
+    gap: 10px;
 }
 
 .login input,
 button {
     border: 1px solid black;
     border-radius: 5px;
+    height: 35px;
+    font-size: 18px;
 }
 
 hr {

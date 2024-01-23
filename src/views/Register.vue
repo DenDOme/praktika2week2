@@ -1,4 +1,5 @@
 <template>
+    <HeaderDiv/>
     <form class="register" @submit.prevent="register">
         <h1>Register</h1>
         <label>fio</label>
@@ -17,8 +18,13 @@
 </template>
 
 <script>
+import HeaderDiv from '../components/HeaderDiv.vue'
+
 export default {
     displayName: 'RegisterView',
+    components: {
+        HeaderDiv
+    },
     data() {
         return {
             fio: "",
@@ -80,12 +86,15 @@ export default {
     width: 300px;
     padding: 10px;
     margin: 0 auto;
+    gap: 10px;
 }
 
 .register input,
 button {
     border: 1px solid black;
     border-radius: 5px;
+    height: 35px;
+    font-size: 18px;
 }
 
 hr {

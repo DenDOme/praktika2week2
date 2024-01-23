@@ -10,22 +10,11 @@ export default createStore({
   getters: {
     isAuthenticated: (state) => !!state.token,
     products: state => state.products,
-    carts: state => state.cartData
+    carts: state => state.cartData,
   },
   mutations: {
     GET_CARDS: (state, cartData) => {
-      const groupedCartData = cartData.reduce((acc, item) => {
-        const existingItem = acc.find(i => i.product_id === item.product_id);
-        if (existingItem) {
-          existingItem.quantity += 1; 
-        } else {
-          const newItem = { ...item, quantity: 1 };
-          acc.push(newItem);
-        }
-        return acc;
-      }, []);
-    
-      state.cartData = groupedCartData;
+      state.cartData = cartData;
     },
     AUTH_SUCCESS: (state, token) => {
       state.token = token;
@@ -41,13 +30,13 @@ export default createStore({
     },
     REMOVE_FROM_CART: (state, itemId) => {
       const existItem = state.cartData.find((item) => item.product_id === itemId.product_id)
-      if(existItem > 1){
+      if (existItem > 1) {
         existItem.quantity--;
       } else {
         state.cartData = state.cartData.filter((item) => item.product_id !== itemId);
       }
     },
-    
+
   },
   actions: {
     GET_CARD_DATAS: ({ commit }) => {
@@ -115,32 +104,32 @@ export default createStore({
         }
       }).then((response) => response.json()).then(() => { commit('REMOVE_FROM_CART', itemId); }).catch((error) => { console.error(error) })
     },
-    PLACE_ORDER: ({commit}) => {
+    PLACE_ORDER: ({ commit }) => {
       const token = localStorage.getItem('myAppToken');
-      fetch('https://jurapro.bhuser.ru/api-shop/order',{
+      fetch('https://jurapro.bhuser.ru/api-shop/order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         }
       }).then((response) => {
-        if(response.ok){
+        if (response.ok) {
           console.log('aformlen')
-        } else{
+        } else {
           console.log('error')
         }
-      }).catch(error => {console.error(error)})
+      }).catch(error => { console.error(error) })
     },
-    ADD_CARD_ITEM: ({commit},itemId) => {
+    ADD_CARD_ITEM: ({ commit }, itemId) => {
       const token = localStorage.getItem('myAppToken');
-      fetch(`https://jurapro.bhuser.ru/api-shop/cart/${itemId}`,{
+      fetch(`https://jurapro.bhuser.ru/api-shop/cart/${itemId}`, {
         method: 'POST',
         headers: {
-          'Content-Type':'application/json',
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-      }).then((response) => {response.json()}).catch((error) => {console.error('error',error)});
-    }
+      }).then((response) => { response.json() }).catch((error) => { console.error('error', error) });
+    },
   },
   modules: {
   }

@@ -11,6 +11,13 @@ export default {
 </script>
 
 <style>
+button{
+  cursor: pointer;
+
+}
+button:hover{
+  opacity: 0.6;
+}
 body{
   padding: 0;
   margin: 0;
